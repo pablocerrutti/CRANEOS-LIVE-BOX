@@ -7,7 +7,7 @@ Construir una solución de realización en vivo, de bajo costo, para eventos y t
 
 ## Arquitectura acordada
 - **Samsung Galaxy A16 5G:** motor principal de captura, mezcla, gráficos, audio, grabación y streaming.
-- **Una capturadora HDMI USB UVC:** entrada cableada inicial.
+- **Una capturadora HDMI USB UVC:** entrada cableada inicial, con detección USB automática en desarrollo.
 - **Fuentes Wi-Fi:** móviles y bodycams que permitan emitir por SRT o RTSP; RTMP podrá evaluarse como alternativa.
 - **Redmi Note 10:** primera cámara inalámbrica de prueba.
 - **Laptop:** consola web con Modo Control y Modo Estudio. No mezcla ni codifica el programa.
@@ -15,7 +15,8 @@ Construir una solución de realización en vivo, de bajo costo, para eventos y t
 
 ## Funciones previstas
 - Modo Control simplificado y Modo Estudio completo.
-- Una entrada HDMI y varias fuentes IP/Wi-Fi según rendimiento.
+- Detección de cámaras USB UVC y una entrada HDMI inicial.
+- Varias fuentes IP/Wi-Fi según rendimiento.
 - Preview/Program, multiview y transiciones CUT/FADE.
 - Escenas, gráficos PNG, zócalos, nombres, cargos y logotipos.
 - Biblioteca de clips, imágenes, intros y outros.
@@ -23,13 +24,13 @@ Construir una solución de realización en vivo, de bajo costo, para eventos y t
 - Panel adaptable a laptop, tablet y teléfono en la red local.
 
 ## Etapas
-1. Validar una capturadora UVC en el Samsung.
-2. Incorporar una fuente Wi-Fi desde el Redmi Note 10.
-3. Probar HDMI + Wi-Fi simultáneamente.
-4. Implementar motor de composición, Preview/Program y transiciones.
-5. Incorporar gráficos, escenas, medios y audio.
-6. Añadir grabación y emisión.
-7. Conectar API local segura y consola web.
+1. **Detección USB:** base Android creada; falta compilar y validar con la capturadora real.
+2. Implementar captura de video UVC y mostrar señal real.
+3. Incorporar una fuente Wi-Fi desde el Redmi Note 10.
+4. Probar HDMI + Wi-Fi simultáneamente.
+5. Implementar motor de composición, Preview/Program y transiciones.
+6. Incorporar gráficos, escenas, medios y audio.
+7. Añadir grabación, emisión y API local segura para la consola.
 8. Optimizar y probar estabilidad térmica y de red.
 
 ## Fuentes inalámbricas
@@ -40,10 +41,12 @@ La laptop es consola de operación y monitoreo. El procesamiento audiovisual ocu
 No se considerará lista una función solo por aparecer en pantalla: deberá implementarse y probarse en el hardware objetivo.
 
 ## Estado
-- [x] Documentación de arquitectura y modos.
 - [x] Prototipo web inicial con HDMI 1, Wi-Fi 1, Wi-Fi 2 y medios.
-- [x] Documentación de fuentes inalámbricas.
-- [ ] Aplicación Android instalable y diagnóstico UVC.
-- [ ] Captura real de HDMI.
+- [x] Base Android de detección UVC y solicitud de permiso USB.
+- [ ] Compilar e instalar la app de diagnóstico en el Samsung.
+- [ ] Captura real de HDMI y visualización de fotogramas.
+- [ ] Conectar detección USB con API local y multiview web.
 - [ ] Recepción real SRT/RTSP.
 - [ ] Prueba simultánea HDMI + Wi-Fi.
+
+Detalles: [Detección USB UVC](docs/USB-UVC-AUTODETECCION.md).
