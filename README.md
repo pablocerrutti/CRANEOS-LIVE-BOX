@@ -1,52 +1,51 @@
 # CRANEOS LIVE BOX
 
-Consola audiovisual multicámara con Android como motor de realización y una interfaz web de estudio como control remoto.
+Consola web de realización audiovisual para laptop, tablet y teléfono.
 
-## Objetivo
-Construir una solución de realización en vivo, de bajo costo, para eventos y transmisiones institucionales.
+**Webapp:** https://pablocerrutti.github.io/CRANEOS-LIVE-BOX/
 
-## Arquitectura acordada
-- **Samsung Galaxy A16 5G:** motor principal de captura, mezcla, gráficos, audio, grabación y streaming.
-- **Una capturadora HDMI USB UVC:** entrada cableada inicial, con detección USB automática en desarrollo.
-- **Fuentes Wi-Fi:** móviles y bodycams que permitan emitir por SRT o RTSP; RTMP podrá evaluarse como alternativa.
-- **Redmi Note 10:** primera cámara inalámbrica de prueba.
-- **Laptop:** consola web con Modo Control y Modo Estudio. No mezcla ni codifica el programa.
-- **Salida objetivo:** 1280×720 a 30 fps, H.264/AAC, sujeto a pruebas reales.
+## Prioridad de esta etapa
 
-## Funciones previstas
-- Modo Control simplificado y Modo Estudio completo.
-- Detección de cámaras USB UVC y una entrada HDMI inicial.
-- Varias fuentes IP/Wi-Fi según rendimiento.
-- Preview/Program, multiview y transiciones CUT/FADE.
-- Escenas, gráficos PNG, zócalos, nombres, cargos y logotipos.
-- Biblioteca de clips, imágenes, intros y outros.
-- Audio, grabación local y emisión RTMP/RTMPS.
-- Panel adaptable a laptop, tablet y teléfono en la red local.
+Dejar primero operativa y comprobable la versión web. El desarrollo del APK y la emisión RTMP nativa quedan en pausa hasta estabilizar la consola.
 
-## Etapas
-1. **Detección USB:** base Android creada; falta compilar y validar con la capturadora real.
-2. Implementar captura de video UVC y mostrar señal real.
-3. Incorporar una fuente Wi-Fi desde el Redmi Note 10.
-4. Probar HDMI + Wi-Fi simultáneamente.
-5. Implementar motor de composición, Preview/Program y transiciones.
-6. Incorporar gráficos, escenas, medios y audio.
-7. Añadir grabación, emisión y API local segura para la consola.
-8. Optimizar y probar estabilidad térmica y de red.
+## Funciones web implementadas en el código
 
-## Fuentes inalámbricas
-SRT será la opción preferida para contribución móvil cuando el emisor y receptor sean compatibles. RTSP permitirá integrar cámaras IP y bodycams que expongan ese protocolo. Tener Wi-Fi no garantiza integración: algunos equipos solo trabajan con aplicaciones propietarias. Ver [Fuentes Wi-Fi](docs/FUENTES-WIFI.md).
+- Modo Estudio y Modo Control adaptable a pantallas pequeñas.
+- Captura de una cámara USB/HDMI UVC desde un navegador compatible, conectada al equipo que opera la consola.
+- Una cámara móvil por Wi-Fi mediante WebRTC con intercambio manual de oferta y respuesta.
+- Incorporación de videos e imágenes locales como fuentes.
+- Monitores Preview y Program.
+- Selector de fuente, TAKE, CUT y FADE.
+- Multiview de las fuentes conectadas.
+- Grabación local de la salida Program en WebM cuando el navegador soporta MediaRecorder.
+- Ventana independiente de salida limpia Program para colocar en un monitor HDMI externo.
 
-## Importante
-La laptop es consola de operación y monitoreo. El procesamiento audiovisual ocurre en Android. Las vistas web serán proxies de baja resolución o vistas seleccionadas para no sobrecargar el equipo.
-No se considerará lista una función solo por aparecer en pantalla: deberá implementarse y probarse en el hardware objetivo.
+## Flujo recomendado con laptop y Redmi Note 10
 
-## Estado
-- [x] Prototipo web inicial con HDMI 1, Wi-Fi 1, Wi-Fi 2 y medios.
-- [x] Base Android de detección UVC y solicitud de permiso USB.
-- [ ] Compilar e instalar la app de diagnóstico en el Samsung.
-- [ ] Captura real de HDMI y visualización de fotogramas.
-- [ ] Conectar detección USB con API local y multiview web.
-- [ ] Recepción real SRT/RTSP.
-- [ ] Prueba simultánea HDMI + Wi-Fi.
+1. Abrir la webapp en Chrome o Edge desde la laptop.
+2. Conectar la capturadora USB/HDMI a la laptop y seleccionar la fuente en la consola.
+3. Conectar una cámara móvil por Wi-Fi si se necesita una segunda fuente.
+4. Seleccionar Preview y pulsar TAKE para llevarla a Program.
+5. Pulsar **Abrir salida limpia para HDMI**.
+6. Mover esa ventana a la pantalla HDMI y maximizarla o ponerla en pantalla completa.
+7. Conectar la salida HDMI de la laptop a la capturadora que esté conectada al Redmi Note 10.
+8. Usar USB Camera Pro en el Redmi para codificar y emitir a RTMP.
 
-Detalles: [Detección USB UVC](docs/USB-UVC-AUTODETECCION.md).
+La salida limpia web transmite imagen. El audio HDMI y la mezcla de audio requieren una etapa específica de implementación y prueba. La capturadora usada por el Redmi no puede estar conectada al mismo tiempo a la laptop; para ingresar otra cámara HDMI a la laptop se necesita otra entrada de captura.
+
+## Límites actuales
+
+- Una conexión móvil WebRTC está implementada en la consola; la segunda cámara Wi-Fi y VDO.Ninja integrado siguen pendientes.
+- La captura USB funciona a través de las API del navegador en equipos compatibles. El soporte de capturadoras en Android depende del navegador, el sistema y el dispositivo.
+- La ventana HDMI es una salida de video del canvas; todavía no hay ruteo completo de audio ni mezclador de audio.
+- La webapp no codifica ni envía RTMP por sí sola. Para la ruta actual se usa el Redmi con USB Camera Pro.
+- La grabación depende de las capacidades de MediaRecorder del navegador y se descarga como WebM.
+- La estabilidad, latencia y rendimiento deben validarse con las cámaras y equipos reales.
+
+## Desarrollo Android
+
+El proyecto Android queda conservado en el repositorio, pero no es el foco de esta etapa. La compilación de Android está pendiente de corregir y validar. No hay un APK verificado para instalar.
+
+## Criterio de calidad
+
+No se marcará una función como terminada solo porque exista un botón o un panel. Debe pasar la validación automática correspondiente y una prueba real con los equipos.
