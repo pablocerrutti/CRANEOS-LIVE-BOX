@@ -1,5 +1,6 @@
 package com.craneos.livebox
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -20,6 +21,7 @@ class MainActivity : Activity(), ConnectChecker {
     private var display: RtmpDisplay? = null
     private var pendingUrl: String? = null
     private val captureRequest = 4102
+    private val audioPermissionRequest = 4103
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +50,32 @@ class MainActivity : Activity(), ConnectChecker {
                 }
                 if (display?.isStreaming == true) return@runOnUiThread
                 pendingUrl = url.trim()
-                val manager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-                startActivityForResult(manager.createScreenCaptureIntent(), captureRequest)
+                if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), audioPermissionRequest)
+                } else {
+                    requestScreenCapture()
+                }
             }
         }
         @JavascriptInterface fun stopStreaming() { runOnUiThread { stopBroadcast() } }
         @JavascriptInterface fun isAvailable(): Boolean = true
+    }
+
+    private fun requestScreenCapture() {
+        val manager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        startActivityForResult(manager.createScreenCaptureIntent(), captureRequest)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == audioPermissionRequest) {
+            if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestScreenCapture()
+            } else {
+                toast("Se necesita permiso de micrófono para preparar el audio RTMP")
+                webView.evaluateJavascript("document.body.classList.remove('broadcast-output')", null)
+            }
+        }
     }
 
     @Deprecated("Deprecated by Android; retained for broad device compatibility")
