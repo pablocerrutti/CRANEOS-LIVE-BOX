@@ -1,0 +1,28 @@
+/* CRANEOS LIVE BOX · bonding y destinos RTMP */
+.network-panel{margin-top:12px;padding:15px;background:linear-gradient(145deg,#121e29,#0d151e 70%);border:1px solid #34485a;border-radius:7px}
+.network-panel-heading,.network-card-heading,.destination-title,.destination-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.network-panel-heading{margin-bottom:13px}.network-panel-heading h2{font-size:13px;letter-spacing:.11em;margin:4px 0}.network-panel-heading p{font-size:10px;color:var(--muted);margin:0}
+.eyebrow{font-size:8px;font-weight:900;letter-spacing:.17em;color:#78b9ed}
+.network-state,.pending-pill{font-size:8px;font-weight:900;letter-spacing:.08em;color:#f0bd73;background:#49351c;border:1px solid #72522b;border-radius:3px;padding:6px 8px;white-space:nowrap}
+.network-state i{display:inline-block;width:6px;height:6px;background:#e5a64d;border-radius:50%;margin-right:5px}
+.network-layout{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(330px,1.1fr);gap:10px;align-items:start}
+.network-card{min-width:0;background:#0b131c;border:1px solid #2d4051;border-radius:5px;padding:12px}
+.network-card-heading{margin-bottom:12px}.network-card-heading>div{display:flex;align-items:center;gap:9px}.network-card-heading h3{font-size:10px;letter-spacing:.1em;margin:0 0 4px}.network-card-heading small{font-size:8px;color:#8093a6;letter-spacing:.07em}
+.network-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:5px;background:#1b3448;color:#8ccaff;font-size:20px}
+.network-label{display:block;font-size:8px;font-weight:900;letter-spacing:.09em;color:#9aabba;margin:10px 0 5px}
+.network-input{display:block;width:100%;min-width:0;box-sizing:border-box;padding:9px 10px;border:1px solid #34495b;border-radius:4px;background:#111e2a;color:#e5edf5;font:10px ui-monospace,monospace;outline:none}
+.network-input:focus{border-color:#559bd4;box-shadow:0 0 0 2px #559bd422}.network-input::placeholder{color:#637588}
+.network-help{font-size:9px;line-height:1.5;color:#7f91a3;margin:7px 0 12px}
+.network-links{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.network-link{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:7px;padding:8px;background:#101b26;border:1px solid #263746;border-radius:4px;min-width:0}
+.network-link-dot{width:7px;height:7px;border-radius:50%;background:#647586}.network-link b,.network-link small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.network-link b{font-size:8px;color:#d5e0e9}.network-link small{font-size:8px;color:#75899c;margin-top:3px}.network-link strong{font:9px ui-monospace,monospace;color:#8193a3}
+.bonding-note{display:flex;flex-direction:column;gap:4px;margin-top:10px;padding:9px;background:#1b2631;border-left:2px solid #d69a4b;border-radius:2px}.bonding-note b{font-size:9px;color:#e8bd7e}.bonding-note span{font-size:9px;line-height:1.45;color:#a2b0bd}
+.network-add,.network-copy,.secret-toggle,.destination-remove{border:1px solid #40566a;background:#1a2b3a;color:#d9e7f2;border-radius:3px;cursor:pointer;font-size:8px;font-weight:900;letter-spacing:.04em;padding:8px}
+.network-add{white-space:nowrap;color:#9bd9bb;border-color:#32674f;background:#153729}.destination-item{padding:10px;margin-bottom:8px;background:#101a25;border:1px solid #2c3d4d;border-radius:4px}
+.destination-title{margin-bottom:2px}.destination-title .network-label{margin:0;color:#83b9e7}.destination-remove{padding:2px 8px;font-size:15px;color:#e89aa0;background:#40232a;border-color:#63343c}
+.secret-row{display:flex;gap:5px}.secret-row .network-input{flex:1}.secret-toggle{min-width:47px}
+.destination-actions{justify-content:flex-start;margin-top:9px}.network-copy{flex:1;background:#1b2b39}.primary-copy{background:#17432f;border-color:#347454;color:#a5e4c0}
+.network-security{display:flex;gap:7px;align-items:flex-start;font-size:8px;line-height:1.5;color:#9babb9;margin:10px 1px 0}.network-security span{font-size:11px}
+.network-footer-note{font-size:9px;line-height:1.5;color:#8294a5;margin:10px 2px 0}
+@media(max-width:850px){.network-layout{grid-template-columns:1fr}}
+@media(max-width:520px){.network-panel{padding:10px}.network-panel-heading{align-items:flex-start;flex-direction:column}.network-state{white-space:normal}.network-links{grid-template-columns:1fr}.network-card-heading{align-items:flex-start}.network-card-heading>div{min-width:0}.network-add{font-size:7px;padding:7px 6px}.destination-actions{gap:5px}.network-copy{padding:8px 4px}}
