@@ -43,3 +43,5 @@ body{background:radial-gradient(ellipse 70% 36% at 50% 0%,rgba(34,112,184,.20),t
 :fullscreen .control-room{padding-top:8px}
 @media(max-width:800px){.audio-panel-head{flex-direction:column}.master-block{width:100%}.audio-channels{grid-template-columns:repeat(2,minmax(0,1fr))}.monitor-bank{padding-left:0;padding-right:0}}
 @media(max-width:520px){.audio-channels{grid-template-columns:1fr 1fr}.audio-panel{padding:10px}.audio-channel{padding:7px}.audio-panel-head p{line-height:1.4}#fullscreenButton{grid-column:1/-1}.output-actions{grid-template-columns:1fr 1fr}}
+
+#audioMonitor{display:none!important}
