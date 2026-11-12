@@ -1,14 +1,74 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10151d"><meta name="description" content="Consola audiovisual CRANEOS LIVE BOX"><title>CRANEOS LIVE BOX · Studio</title><link rel="stylesheet" href="web/studio.css"></head><body><div class="app-shell">
-<header class="topbar"><a class="brand" href="./"><span class="brand-mark">CL</span><span><strong>CRANEOS</strong><small>LIVE BOX · CONTROL ROOM</small></span></a><div class="connection"><i class="dot online"></i><span id="connectionText">Consola web activa</span><span class="status-chip">WEB STUDIO</span></div></header>
-<nav class="toolbar"><div class="mode-tabs"><button class="mode-tab active" data-mode="studio">Modo Estudio</button><button class="mode-tab" data-mode="control">Modo Control</button></div><div class="toolbar-right"><label for="monitorProfile">Calidad</label><select id="monitorProfile"><option value="720">720p · 30 FPS</option><option value="540">540p · 24 FPS</option><option value="360">360p · 15 FPS</option></select></div></nav>
-<main id="studioView" class="workspace"><section class="program-column"><div class="monitor-grid">
-<article class="monitor-card"><div class="panel-heading"><span>PREVIEW</span><span>PREPARACIÓN</span></div><div class="monitor-screen"><video id="previewVideo" autoplay muted playsinline></video><div id="previewEmpty" class="no-signal"><b>◉</b><strong>Seleccioná una fuente</strong><small>Preparala antes de llevarla al programa</small></div></div><div class="monitor-footer"><span id="previewSource">Fuente: —</span><span>PREVIEW</span></div></article>
-<article class="monitor-card"><div class="panel-heading"><span>PROGRAM</span><span id="programBadge" class="live-label">● LISTO</span></div><div class="monitor-screen"><canvas id="programCanvas" width="1280" height="720"></canvas><div id="programEmpty" class="no-signal"><b>▣</b><strong>Programa en espera</strong><small>Elegí una fuente y presioná TAKE</small></div></div><div class="monitor-footer"><span id="programSource">Salida: —</span><span>PROGRAM</span></div></article></div><button id="cleanOutputButton" class="button primary full">ABRIR SALIDA LIMPIA PARA HDMI ↗</button>
-<section class="panel"><div class="section-heading"><div><h2>Switcher</h2><p>Seleccioná una fuente y ejecutá TAKE</p></div><small id="sourceCount">0 FUENTES</small></div><label class="field-label" for="videoDevice">Dispositivo de captura USB</label><select id="videoDevice" class="device-select"><option value="">Seleccionar cámara USB / HDMI</option></select><div id="sourceButtons" class="source-buttons"><button class="source-button" id="addUsb"><b>1</b><span>USB / HDMI</span><small>Capturadora UVC conectada a laptop</small></button><button class="source-button" id="phoneHelp"><b>2</b><span>iPHONE Wi-Fi</span><small>Conectar cámara inalámbrica</small></button><button class="source-button" id="addMedia"><b>3</b><span>MEDIOS</span><small>Video o imagen desde este equipo</small></button></div><input id="mediaInput" type="file" accept="video/*,image/*" hidden><div class="transition-row"><label for="transitionType">Transición</label><select id="transitionType"><option value="cut">CUT · Corte directo</option><option value="fade">FADE · Fundido</option></select><button id="takeButton" class="button take" disabled>TAKE → PROGRAM</button></div></section>
-<section class="panel"><div class="section-heading"><div><h2>Multiview · Entradas</h2><p>Estado de las fuentes en este navegador</p></div><small id="multiviewCount">0 ACTIVAS</small></div><div class="multiview-grid" id="multiview"><div class="empty-state">No hay fuentes conectadas</div></div></section></section>
-<aside class="side-column"><section class="panel" id="androidRtmpPanel"><div class="section-heading"><div><h2>Emisión desde Android</h2><p>Codificador H.264/AAC · RTMP/RTMPS</p></div><b class="status-chip" id="androidStreamBadge">LISTO</b></div><label class="field-label" for="rtmpEndpoint">Dirección RTMP completa (incluida la clave)</label><input id="rtmpEndpoint" type="password" autocomplete="off" placeholder="rtmps://servidor/app/clave"><button id="showRtmpKey" class="button full">Mostrar / ocultar dirección</button><button id="androidGoLive" class="button live full">● EMITIR DESDE ESTE SAMSUNG</button><p class="notice">Disponible dentro de la app Android CRANEOS. Al iniciar, se envía la pantalla en modo Programa. Para detener la emisión, pulsá el botón de bajar volumen. No compartas tu clave de emisión.</p><p class="muted" id="androidStreamStatus">Esperando conexión con el codificador Android.</p></section><section class="panel"><div class="section-heading"><div><h2>Grabación local</h2><p>Graba la salida de programa</p></div><b id="recordState" class="status-chip">REC OFF</b></div><button id="recordButton" class="button record">● INICIAR GRABACIÓN</button><div class="metric"><span>Resolución</span><b id="resolutionLabel">1280 × 720</b></div><div class="metric"><span>Formato</span><b>WebM</b></div><p class="notice">La grabación se guarda en la laptop. El audio se incluye si la fuente entrega una pista y el navegador lo permite.</p></section>
-<section class="panel"><div class="section-heading"><div><h2>Cámara inalámbrica</h2><p>Emparejamiento directo WebRTC</p></div></div><a class="button primary full" href="camera.html" target="_blank" rel="noopener">ABRIR CÁMARA EN IPHONE ↗</a><label class="field-label" for="offerInput">1 · Pegar oferta generada en iPhone</label><textarea id="offerInput" rows="4" placeholder="Pegá aquí el código de oferta"></textarea><button id="acceptOffer" class="button full">Crear respuesta</button><label class="field-label" for="answerOutput">2 · Copiar respuesta al iPhone</label><textarea id="answerOutput" rows="4" readonly placeholder="Aquí aparecerá la respuesta"></textarea><button id="copyAnswer" class="button full">Copiar respuesta</button><p class="muted">Ambos equipos en la misma Wi-Fi. El video viaja directamente entre dispositivos.</p></section>
-<section class="panel"><div class="section-heading"><div><h2>Emisión auxiliar</h2><p>Redmi Note 10 · USB Camera Pro</p></div><b class="status-chip">RTMP</b></div><p class="muted">El Redmi puede seguir codificando la capturadora y emitiendo directamente a YouTube o Twitch. Esta consola web no recibe RTMP directamente; falta implementar un receptor compatible.</p><a class="button full" href="docs/ARQUITECTURA-WEB.md">Ver arquitectura y límites</a></section><section class="panel"><h2>Control rápido</h2><button id="quickTake" class="button take full" disabled>TAKE → PROGRAM</button><button id="quickRecord" class="button full">INICIAR / DETENER REC</button></section></aside></main>
-<main id="controlView" class="control-view hidden"><section class="panel control-main"><h1>Modo Control</h1><p>Operación simplificada desde tablet o teléfono.</p><div class="control-grid"><button id="controlUsb">USB / HDMI</button><button id="controlPhone">iPHONE Wi-Fi</button><button id="controlMedia">MEDIOS</button><button id="controlTake" disabled>TAKE</button></div><button id="controlRecord" class="button full">INICIAR / DETENER REC</button><p class="notice">La capturadora se abre en el navegador del equipo al que está conectada.</p></section></main>
-<footer class="footer"><span>CRANEOS LIVE BOX · WEB STUDIO</span><span id="lastUpdate">Lista para conectar cámaras</span><a href="docs/PRUEBA-HARDWARE.md">Prueba de hardware</a></footer></div><script src="web/studio.js"></script></body></html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111820"><meta name="description" content="CRANEOS LIVE BOX · Consola de realización audiovisual">
+<title>CRANEOS LIVE BOX · Realización</title><link rel="stylesheet" href="web/studio.css">
+</head>
+<body>
+<div class="app-shell">
+<header class="topbar">
+ <a class="brand" href="./"><span class="brand-mark">CL</span><span><strong>CRANEOS LIVE BOX</strong><small>REALIZACIÓN EN VIVO</small></span></a>
+ <div class="connection"><i class="dot online"></i><span id="connectionText">SISTEMA LISTO</span><span class="status-chip">WEB SWITCHER</span></div>
+</header>
+<main class="control-room">
+ <section class="monitor-bank">
+  <article class="monitor-card preview-card">
+   <div class="panel-heading"><span><i class="tally tally-preview"></i> PREVIEW</span><span class="monitor-subtitle">PREPARAR SIGUIENTE PLANO</span></div>
+   <div class="monitor-screen"><video id="previewVideo" autoplay muted playsinline></video><div id="previewEmpty" class="no-signal"><b>PVW</b><strong>Sin fuente seleccionada</strong><small>Elegí una entrada en la bandeja inferior</small></div></div>
+   <div class="monitor-footer"><span id="previewSource">PREVIEW · —</span><span class="bus-label preview-bus">PVW</span></div>
+  </article>
+  <article class="monitor-card program-card">
+   <div class="panel-heading"><span><i class="tally tally-program"></i> PROGRAM</span><span id="programBadge" class="live-label">● EN ESPERA</span></div>
+   <div class="monitor-screen"><canvas id="programCanvas" width="1280" height="720"></canvas><div id="programEmpty" class="no-signal"><b>PGM</b><strong>Programa en espera</strong><small>La audiencia todavía no recibe señal</small></div></div>
+   <div class="monitor-footer"><span id="programSource">PROGRAM · —</span><span class="bus-label program-bus">PGM</span></div>
+  </article>
+ </section>
+ <section class="switcher-strip">
+  <div class="transition-settings">
+   <label for="transitionType">TRANSICIÓN</label>
+   <select id="transitionType"><option value="cut">CUT · Corte</option><option value="fade">MIX · Fundido</option></select>
+   <label for="transitionDuration">DURACIÓN</label>
+   <select id="transitionDuration"><option value="300">0,3 s</option><option value="500" selected>0,5 s</option><option value="1000">1 s</option><option value="1500">1,5 s</option></select>
+  </div>
+  <div class="switcher-actions">
+   <button id="cutButton" class="button cut-button" disabled>CUT</button>
+   <button id="takeButton" class="button take" disabled>TAKE <span>→</span></button>
+   <button id="fadeButton" class="button fade-button" disabled>MIX / FADE</button>
+  </div>
+  <div class="output-actions">
+   <button id="cleanOutputButton" class="button secondary">SALIDA HDMI ↗</button>
+   <button id="recordButton" class="button record">● REC</button>
+   <span id="recordState" class="status-chip">REC OFF</span>
+  </div>
+ </section>
+ <section class="inputs-panel">
+  <div class="section-heading"><div><h2>ENTRADAS</h2><p>Seleccioná PREVIEW o enviá una fuente directamente a PROGRAM</p></div><span id="sourceCount" class="count-label">0 FUENTES</span></div>
+  <div class="input-bank" id="multiview"><div class="empty-state">Conectá una cámara USB, una cámara Wi-Fi o agregá un medio para comenzar.</div></div>
+  <div class="input-tools">
+   <div class="input-tool-group">
+    <label for="videoDevice">CAPTURADORA USB / HDMI</label>
+    <select id="videoDevice"><option value="">Elegir dispositivo de video…</option></select>
+    <button id="addUsb" class="button secondary">＋ CONECTAR USB</button>
+   </div>
+   <button id="phoneHelp" class="button secondary">＋ CÁMARA WI-FI</button>
+   <button id="addMedia" class="button secondary">＋ VIDEO / IMAGEN</button>
+   <input id="mediaInput" type="file" accept="video/*,image/*" hidden>
+  </div>
+ </section>
+ <section class="lower-dock">
+  <article class="dock-panel"><div class="dock-heading"><h3>ESTADO DEL SISTEMA</h3><span id="lastUpdate">Listo para conectar</span></div><div class="system-metrics"><div><small>FORMATO</small><b id="resolutionLabel">1280 × 720</b></div><div><small>GRABACIÓN</small><b id="recordFormat">WEBM LOCAL</b></div><div><small>FUENTES</small><b id="multiviewCount">0 ACTIVAS</b></div></div></article>
+  <article class="dock-panel"><div class="dock-heading"><h3>CONTROL DE CÁMARA WI-FI</h3><a href="camera.html" target="_blank" rel="noopener">ABRIR CÁMARA IPHONE ↗</a></div><details><summary>Emparejamiento manual WebRTC (avanzado)</summary><label class="field-label" for="offerInput">Oferta generada en el iPhone</label><textarea id="offerInput" rows="3" placeholder="Pegá aquí el código de oferta"></textarea><button id="acceptOffer" class="button secondary">CREAR RESPUESTA</button><label class="field-label" for="answerOutput">Respuesta para copiar al iPhone</label><textarea id="answerOutput" rows="3" readonly></textarea><button id="copyAnswer" class="button secondary">COPIAR RESPUESTA</button></details></article>
+ </section>
+ <section class="advanced-dock">
+  <details><summary>Configuración avanzada de salida y codificación</summary>
+   <p class="muted">La versión web realiza la mezcla visual. Para emitir RTMP podés usar el Redmi Note 10 con USB Camera Pro y la capturadora conectada a la salida HDMI de la laptop.</p>
+   <label class="field-label" for="monitorProfile">Resolución del programa</label><select id="monitorProfile"><option value="720">720p · 30 FPS</option><option value="540">540p · 24 FPS</option><option value="360">360p · 15 FPS</option></select>
+   <div id="androidRtmpPanel" class="android-note"><b>Emisión nativa Android</b><p id="androidStreamStatus">No disponible en navegador. Esta función requiere la app Android.</p></div>
+  </details>
+ </section>
+</main>
+<footer class="footer"><span>CRANEOS LIVE BOX · CONTROL ROOM</span><span>PREVIEW ≠ PROGRAM · TAKE PARA SALIR AL AIRE</span><a href="docs/ARQUITECTURA-WEB.md">Arquitectura</a></footer>
+</div>
+<script src="web/studio.js"></script>
+</body></html>
