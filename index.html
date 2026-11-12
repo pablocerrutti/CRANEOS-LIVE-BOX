@@ -37,6 +37,7 @@
    <button id="fadeButton" class="button fade-button" disabled>MIX / FADE</button>
   </div>
   <div class="output-actions">
+   <button id="fullscreenButton" class="button secondary" title="Pantalla completa">⛶ PANTALLA COMPLETA</button>
    <button id="cleanOutputButton" class="button secondary">SALIDA HDMI ↗</button>
    <button id="recordButton" class="button record">● REC</button>
    <span id="recordState" class="status-chip">REC OFF</span>
@@ -55,6 +56,11 @@
    <button id="addMedia" class="button secondary">＋ VIDEO / IMAGEN</button>
    <input id="mediaInput" type="file" accept="video/*,image/*" hidden>
   </div>
+ </section>
+ <section class="audio-panel" id="audioPanel">
+  <div class="audio-panel-head"><div><h2>MEZCLADOR DE AUDIO</h2><p>Control independiente de cada entrada · mezcla general de salida</p></div><div class="master-block"><div class="master-title"><span>MASTER</span><strong id="masterValue">100%</strong></div><input id="masterGain" type="range" min="0" max="150" value="100" aria-label="Volumen maestro"><div class="master-meter"><span id="masterMeterFill"></span></div><small id="masterDb">SIN SEÑAL</small></div></div>
+  <div class="audio-channels" id="audioChannels"><div class="audio-empty">Los canales de audio aparecerán aquí al conectar fuentes.</div></div>
+  <audio id="audioMonitor" autoplay></audio>
  </section>
  <section class="lower-dock">
   <article class="dock-panel"><div class="dock-heading"><h3>ESTADO DEL SISTEMA</h3><span id="lastUpdate">Listo para conectar</span></div><div class="system-metrics"><div><small>FORMATO</small><b id="resolutionLabel">1280 × 720</b></div><div><small>GRABACIÓN</small><b id="recordFormat">WEBM LOCAL</b></div><div><small>FUENTES</small><b id="multiviewCount">0 ACTIVAS</b></div></div></article>
