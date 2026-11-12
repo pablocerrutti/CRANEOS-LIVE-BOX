@@ -5,3 +5,13 @@
 .device-select{display:block;width:100%;margin:5px 0 12px;background:#101821;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:10px}
 
 .source-tile{display:block;width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer}.source-tile:hover{border-color:#398ee7}.source-tile:focus{outline:2px solid #398ee7;outline-offset:2px}
+
+/* Android native RTMP: clean program output for MediaProjection */
+.broadcast-output{overflow:hidden;background:#000}
+.broadcast-output .topbar,.broadcast-output .toolbar,.broadcast-output .side-column,.broadcast-output .footer,.broadcast-output .program-column>.panel,.broadcast-output .monitor-card:first-child,.broadcast-output .panel-heading,.broadcast-output .monitor-footer{display:none!important}
+.broadcast-output .app-shell{max-width:none;padding:0;margin:0}
+.broadcast-output .workspace{display:block;padding:0;margin:0}
+.broadcast-output .program-column,.broadcast-output .monitor-grid,.broadcast-output .monitor-card:nth-child(2){display:block;width:100%;height:100%;margin:0;padding:0;border:0;background:#000}
+.broadcast-output .monitor-screen{position:static;display:block;width:100%;height:100%;min-height:0;aspect-ratio:auto;background:#000}
+.broadcast-output #programCanvas{position:fixed;inset:0;width:100vw;height:100vh;object-fit:fill;background:#000}
+.broadcast-output #programEmpty{display:none!important}
