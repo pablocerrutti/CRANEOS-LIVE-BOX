@@ -1,0 +1,19 @@
+{
+  "name": "CRANEOS LIVE BOX",
+  "short_name": "CRANEOS",
+  "description": "Consola móvil y de estudio para realización audiovisual",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080d13",
+  "theme_color": "#111820",
+  "icons": [
+    {
+      "src": "assets/craneos-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
