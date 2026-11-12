@@ -1,0 +1,27 @@
+name: Web Studio validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'web/**'
+      - '.github/workflows/web-check.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: node --check web/studio.js
+      - name: Verify web entry points
+        run: |
+          test -s index.html
+          test -s web/studio.css
+          grep -q 'web/studio.js' index.html
+          grep -q 'web/studio.css' index.html
+      - name: Check whitespace errors
+        run: git diff --check
