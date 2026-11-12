@@ -1,38 +1,42 @@
-# CRANEOS LIVE BOX — arquitectura web + Android
+# CRANEOS LIVE BOX — arquitectura web prioritaria
 
 ## Consola web
-- GitHub Pages sirve la interfaz de realización.
-- Preview/Program, selección de fuente, CUT/FADE y composición del programa en un canvas.
-- Captura UVC desde navegador compatible cuando la capturadora está conectada a una laptop.
-- Cámara móvil por WebRTC con emparejamiento manual (oferta/respuesta).
-- Grabación WebM local desde el navegador, cuando MediaRecorder está disponible.
 
-## Emisión móvil desde Samsung
-La aplicación Android envuelve la consola web en WebView y agrega un puente nativo para la emisión RTMP/RTMPS mediante RootEncoder y MediaProjection. La app solicita autorización explícita de captura de pantalla; después codifica la pantalla del dispositivo en H.264 y el audio del micrófono en AAC.
+GitHub Pages sirve la consola de realización. La laptop es el equipo recomendado para operar esta etapa.
 
-En esta primera integración, la emisión transmite la vista de programa a pantalla completa (modo de salida limpia). Se configura una URL RTMP/RTMPS completa en el panel de emisión de la consola. La dirección incluye la clave de emisión: no compartir capturas de pantalla ni pegarla en archivos del repositorio.
+- Preview y Program.
+- Selección de fuente y multiview.
+- Transiciones CUT y FADE.
+- Captura de cámara USB/HDMI UVC mediante getUserMedia en navegadores compatibles.
+- Una cámara móvil por Wi-Fi mediante WebRTC con intercambio manual de oferta/respuesta.
+- Carga de videos e imágenes locales.
+- Grabación local WebM desde el canvas Program mediante MediaRecorder.
+- Ventana independiente de salida limpia Program, útil para mover a una pantalla HDMI externa.
 
-Para detener la transmisión en esta versión inicial, usar la tecla física de bajar volumen. La app debe permanecer abierta durante la prueba. Esta integración es un primer puente funcional de pantalla a RTMP; todavía no equivale a un motor broadcast nativo completo.
+## Ruta de emisión externa: laptop + Redmi Note 10
 
-## Limitaciones importantes
-- MediaProjection captura la pantalla completa del teléfono; por eso la consola pasa a modo Programa antes de iniciar.
-- El audio transmitido en esta primera versión es el micrófono del Samsung; todavía no hay mezclador de audio independiente.
-- El panel web actual tiene una conexión WebRTC manual para una cámara móvil. Dos cámaras simultáneas y VDO.Ninja como entradas integradas siguen pendientes.
-- La capturadora UVC en Android todavía no está conectada al mezclador web; la detección USB previa era solo diagnóstico.
-- No se ha validado todavía en el Samsung A16 ni medido estabilidad, temperatura, FPS o latencia.
-- No guardar claves RTMP en GitHub ni en capturas públicas.
+1. La laptop ejecuta la consola web y realiza la composición visual.
+2. La ventana de salida limpia se mueve al monitor HDMI conectado a la laptop.
+3. La salida HDMI entra a una capturadora USB HDMI conectada al Redmi Note 10.
+4. USB Camera Pro en el Redmi codifica y envía RTMP/RTMPS a YouTube o Twitch.
 
-## Modo estudio con laptop + Redmi
-La laptop puede realizar la mezcla y enviar la salida limpia por HDMI a la capturadora conectada al Redmi Note 10. USB Camera Pro en el Redmi realiza la codificación y emisión RTMP. Esta ruta es independiente del codificador Android de la modalidad móvil.
+**Importante:** la salida limpia actual contiene video del canvas. El audio todavía no dispone de un mezclador ni de una ruta HDMI garantizada. Para producción con audio se debe diseñar y probar el ruteo de audio del equipo y de la capturadora. La capturadora conectada al Redmi no puede estar simultáneamente conectada a la laptop.
 
-## Prueba inicial en Samsung
-1. Esperar que GitHub Pages publique los últimos cambios.
-2. Instalar el APK de depuración generado por GitHub Actions.
-3. Abrir CRANEOS LIVE BOX y conectar una cámara móvil mediante el flujo WebRTC actual.
-4. Seleccionar la cámara en Preview y pulsar TAKE para llevarla a Program.
-5. En el panel «Emisión desde Android», ingresar la URL RTMP/RTMPS completa y pulsar «Emitir desde este Samsung».
-6. Aceptar el permiso de captura de pantalla de Android.
-7. Comprobar en YouTube/Twitch que aparece la imagen y el audio. Bajar volumen detiene la emisión.
+Si se desea ingresar una cámara HDMI a la laptop y además enviar la salida de la laptop al Redmi, se necesitan dos dispositivos de captura independientes: uno para la entrada de cámara y otro para la salida de programa.
 
-## Seguridad
-La clave RTMP se introduce en tiempo de ejecución. El repositorio no almacena claves. RTMP sin TLS transmite datos sin cifrar; preferir RTMPS cuando el proveedor lo admita.
+## Fuentes inalámbricas
+
+La consola web actual tiene un flujo manual WebRTC para una cámara móvil. Se intercambian la oferta y la respuesta desde la página camera.html. La segunda cámara simultánea y la integración directa de VDO.Ninja están pendientes.
+
+## Compatibilidad y seguridad
+
+- Abrir la webapp mediante HTTPS (GitHub Pages) y conceder permiso de cámara/micrófono cuando corresponda.
+- La disponibilidad de UVC depende del navegador y del sistema operativo.
+- En Android móvil, la captura UVC en navegador no está garantizada; la laptop es el equipo principal de esta fase.
+- La grabación WebM depende del soporte de MediaRecorder y del espacio disponible.
+- La webapp no genera RTMP directamente. El Redmi con USB Camera Pro cumple esa función en el flujo acordado.
+- No colocar claves RTMP en archivos del repositorio.
+
+## Android nativo
+
+El código Android se conserva como una línea de desarrollo posterior. La integración actual de RTMP no está compilada ni validada en hardware; no debe considerarse operativa ni reemplaza el flujo web + Redmi.
