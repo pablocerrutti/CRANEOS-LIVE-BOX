@@ -2,36 +2,44 @@
 
 Actualizado: 12 de noviembre de 2026.
 
-## Arquitectura actual
+## Prioridad actual
 
-- Samsung Galaxy A16 5G: motor de realización.
-- Una capturadora HDMI USB UVC como entrada cableada inicial.
-- Fuentes inalámbricas por Wi-Fi: móviles y bodycams que expongan SRT o RTSP; RTMP como alternativa.
-- Laptop: Modo Estudio y Modo Control; no realiza la mezcla ni codifica el programa.
-- Objetivo de salida: 720p30 H.264/AAC, sujeto a pruebas.
+**Estabilizar la webapp antes de continuar con Android.**
 
-## Implementado en el repositorio
+Webapp publicada: https://pablocerrutti.github.io/CRANEOS-LIVE-BOX/
 
-- [x] Arquitectura general y separación entre motor Android y consola web.
-- [x] Diseño inicial de Modo Control y Modo Estudio.
-- [x] Panel web adaptable con HDMI 1, Wi-Fi 1, Wi-Fi 2 y medios.
-- [x] Campos para configurar una fuente de red RTSP/SRT desde la consola.
-- [x] Documentación de integración de móviles y bodycams Wi-Fi.
+## Funciones presentes en el código web
 
-## Pendiente
+- [x] Interfaz adaptable Modo Estudio / Modo Control.
+- [x] Selección de entrada USB/UVC desde navegador compatible.
+- [x] Una fuente móvil Wi-Fi mediante WebRTC con intercambio manual.
+- [x] Carga de videos e imágenes locales.
+- [x] Preview y Program en canvas.
+- [x] TAKE, CUT y FADE.
+- [x] Multiview de fuentes.
+- [x] Grabación WebM local de Program.
+- [x] Ventana independiente de salida limpia Program para monitor HDMI.
+- [x] Validación automática de sintaxis JavaScript mediante GitHub Actions (en ejecución/verificación).
 
-- [ ] App Android instalable y diagnóstico UVC.
-- [ ] Captura real de la capturadora HDMI.
-- [ ] Receptor RTSP.
-- [ ] Receptor SRT.
-- [ ] Decodificación y composición simultánea.
-- [ ] Preview/Program real y transporte de video a la laptop.
-- [ ] Gráficos, escenas, audio y biblioteca multimedia.
-- [ ] Grabación y emisión RTMP/RTMPS.
-- [ ] API local autenticada.
+## Pendiente de prueba real
+
+- [ ] Confirmar apertura y funcionamiento completo en Chrome/Edge de laptop.
+- [ ] Probar capturadora HDMI USB UVC en laptop.
+- [ ] Probar cámara iPhone por Wi-Fi y reconexión.
+- [ ] Verificar Preview, TAKE, CUT y FADE con video real.
+- [ ] Verificar grabación WebM y reproducción del archivo.
+- [ ] Probar salida limpia en un monitor HDMI y capturadora conectada al Redmi.
+- [ ] Resolver ruteo y mezcla de audio para la salida HDMI.
+- [ ] Incorporar una segunda cámara Wi-Fi y evaluar VDO.Ninja.
+- [ ] Optimizar resolución/FPS para la laptop de bajo consumo.
+
+## Límites conocidos
+
+- La webapp no transmite RTMP directamente desde el navegador.
+- La salida HDMI limpia actual es de video; el audio no está mezclado ni garantizado en esa salida.
+- El soporte UVC en teléfonos Android depende del navegador y del dispositivo; la ruta principal de esta etapa es la laptop.
+- Android/RTMP nativo queda en pausa. El último intento de compilación Android falló por incompatibilidad de metadatos Kotlin de la dependencia RootEncoder; no hay APK verificado.
 
 ## Próximo hito
 
-Probar una capturadora UVC en el A16 y una fuente Wi-Fi (primero Redmi Note 10) al mismo tiempo. Registrar resolución, FPS, latencia, cortes, temperatura y estabilidad durante al menos 30 minutos.
-
-La interfaz web es un prototipo de consola y aún no es un mezclador operativo. Las funciones solo se marcarán como listas después de su implementación y prueba en el teléfono real.
+Validar el flujo básico en laptop: capturadora USB → Preview → TAKE → Program → salida limpia HDMI. Después incorporar el iPhone como segunda fuente y probar el flujo laptop HDMI → capturadora → Redmi Note 10 → USB Camera Pro.
