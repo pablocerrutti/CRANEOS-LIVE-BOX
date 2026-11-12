@@ -34,7 +34,7 @@ class UsbCameraMonitor(
             when (intent.action) {
                 UsbManager.ACTION_USB_DEVICE_ATTACHED,
                 UsbManager.ACTION_USB_DEVICE_DETACHED -> scan()
-                permissionAction -> scan()
+                permissionAction -> scan(requestMissingPermission = false)
             }
         }
     }
@@ -70,7 +70,7 @@ class UsbCameraMonitor(
         }
     }
 
-    private fun scan() {
+    private fun scan(requestMissingPermission: Boolean = true) {
         val cameras = usbManager.deviceList.values
             .filter(::isUvc)
             .map { device ->
@@ -78,7 +78,7 @@ class UsbCameraMonitor(
                     .map { device.getInterface(it) }
                     .count { it.interfaceClass == 14 && (it.interfaceSubclass == 1 || it.interfaceSubclass == 2) }
                 val granted = usbManager.hasPermission(device)
-                if (!granted) requestPermission(device)
+                if (!granted && requestMissingPermission) requestPermission(device)
                 UsbCameraInfo(
                     name = device.productName ?: device.deviceName,
                     vendorId = device.vendorId,
