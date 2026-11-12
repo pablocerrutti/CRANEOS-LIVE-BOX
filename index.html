@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111820"><meta name="description" content="CRANEOS LIVE BOX · Consola de realización audiovisual">
-<title>CRANEOS LIVE BOX · Realización</title><link rel="stylesheet" href="web/studio.css">
+<title>CRANEOS LIVE BOX · Realización</title><link rel="stylesheet" href="web/studio.css"><link rel="stylesheet" href="web/network-panel.css">
 </head>
 <body>
 <div class="app-shell">
@@ -62,6 +62,40 @@
   <div class="audio-channels" id="audioChannels"><div class="audio-empty">Los canales de audio aparecerán aquí al conectar fuentes.</div></div>
   <audio id="audioMonitor" autoplay></audio>
  </section>
+
+ <section class="network-panel" id="networkPanel">
+  <div class="network-panel-heading"><div><span class="eyebrow">CONEXIÓN Y EMISIÓN</span><h2>REDES · BONDING · DESTINOS</h2><p>Centro de configuración de conectividad y salidas de transmisión</p></div><span class="network-state"><i></i> AGENTE BONDING PENDIENTE</span></div>
+  <div class="network-layout">
+   <article class="network-card bonding-card">
+    <div class="network-card-heading"><div><span class="network-icon">⇄</span><div><h3>AGREGACIÓN DE REDES</h3><small>OPEN SOURCE · MPTCP / OPENMPTCPROUTER</small></div></div><span class="pending-pill">NO CONECTADO</span></div>
+    <label class="network-label" for="bondServer">SERVIDOR DE AGREGACIÓN (VPS)</label>
+    <input id="bondServer" class="network-input" type="text" inputmode="url" placeholder="Ej.: vpn.midominio.com o 203.0.113.10">
+    <p class="network-help">Dirección del servidor que reunirá el tráfico de las distintas conexiones. Se configurará cuando instalemos el servidor y el cliente.</p>
+    <div class="network-links">
+     <div class="network-link"><span class="network-link-dot"></span><div><b>ETHERNET</b><small>Esperando agente de red</small></div><strong>—</strong></div>
+     <div class="network-link"><span class="network-link-dot"></span><div><b>WI-FI</b><small>Esperando agente de red</small></div><strong>—</strong></div>
+     <div class="network-link"><span class="network-link-dot"></span><div><b>USB TETHERING</b><small>Red compartida del móvil</small></div><strong>—</strong></div>
+     <div class="network-link"><span class="network-link-dot"></span><div><b>MÓDEM 4G / 5G</b><small>Conexión móvil adicional</small></div><strong>—</strong></div>
+    </div>
+    <div class="bonding-note"><b>Estado de desarrollo</b><span>Este panel es la interfaz de configuración. La agregación real requiere instalar el cliente en el equipo y el servidor remoto; todavía no hay tráfico combinado ni métricas en vivo.</span></div>
+   </article>
+   <article class="network-card destinations-card">
+    <div class="network-card-heading"><div><span class="network-icon">↗</span><div><h3>DESTINOS DE TRANSMISIÓN</h3><small>PERFILES RTMP / RTMPS</small></div></div><button id="addDestination" class="network-add">＋ AGREGAR DESTINO</button></div>
+    <div id="destinationList" class="destination-list">
+     <div class="destination-item" data-destination>
+      <div class="destination-title"><label class="network-label">DESTINO 01</label><button type="button" class="destination-remove" data-remove aria-label="Eliminar destino" title="Eliminar destino">×</button></div>
+      <label class="network-label" for="destName0">PLATAFORMA / NOMBRE</label><input id="destName0" class="network-input" data-name type="text" value="YouTube" placeholder="Ej.: YouTube, Facebook, Twitch">
+      <label class="network-label" for="destUrl0">DIRECCIÓN DEL SERVIDOR RTMP</label><input id="destUrl0" class="network-input" data-url type="url" inputmode="url" placeholder="rtmps://servidor/…">
+      <label class="network-label" for="destKey0">CLAVE DE TRANSMISIÓN</label><div class="secret-row"><input id="destKey0" class="network-input" data-key type="password" autocomplete="off" placeholder="Pegá aquí la clave de emisión"><button type="button" class="secret-toggle" data-reveal>VER</button></div>
+      <div class="destination-actions"><button type="button" class="network-copy" data-copy-url>COPIAR DIRECCIÓN</button><button type="button" class="network-copy primary-copy" data-copy-key>COPIAR CLAVE</button></div>
+     </div>
+    </div>
+    <p class="network-security"><span>🔒</span> Las claves se mantienen solamente en esta sesión. No se guardan en GitHub ni en el navegador. Al recargar la página tendrás que ingresarlas nuevamente.</p>
+   </article>
+  </div>
+  <div class="network-footer-note">La salida RTMP seguirá realizándose desde el Redmi Note 10 con USB Camera Pro hasta que integremos y validemos un codificador propio. Este panel organiza los destinos y permite copiar sus datos.</div>
+ </section>
+
  <section class="lower-dock">
   <article class="dock-panel"><div class="dock-heading"><h3>ESTADO DEL SISTEMA</h3><span id="lastUpdate">Listo para conectar</span></div><div class="system-metrics"><div><small>FORMATO</small><b id="resolutionLabel">1280 × 720</b></div><div><small>GRABACIÓN</small><b id="recordFormat">WEBM LOCAL</b></div><div><small>FUENTES</small><b id="multiviewCount">0 ACTIVAS</b></div></div></article>
   <article class="dock-panel"><div class="dock-heading"><h3>CONTROL DE CÁMARA WI-FI</h3><a href="camera.html" target="_blank" rel="noopener">ABRIR CÁMARA IPHONE ↗</a></div><details><summary>Emparejamiento manual WebRTC (avanzado)</summary><label class="field-label" for="offerInput">Oferta generada en el iPhone</label><textarea id="offerInput" rows="3" placeholder="Pegá aquí el código de oferta"></textarea><button id="acceptOffer" class="button secondary">CREAR RESPUESTA</button><label class="field-label" for="answerOutput">Respuesta para copiar al iPhone</label><textarea id="answerOutput" rows="3" readonly></textarea><button id="copyAnswer" class="button secondary">COPIAR RESPUESTA</button></details></article>
@@ -76,5 +110,5 @@
 </main>
 <footer class="footer"><span>CRANEOS LIVE BOX · CONTROL ROOM</span><span>PREVIEW ≠ PROGRAM · TAKE PARA SALIR AL AIRE</span><a href="docs/ARQUITECTURA-WEB.md">Arquitectura</a></footer>
 </div>
-<script src="web/studio.js"></script>
+<script src="web/studio.js"></script><script src="web/network-panel.js"></script>
 </body></html>
