@@ -1,53 +1,49 @@
 # CRANEOS LIVE BOX
 
-Consola audiovisual multicámara con Android como motor de realización y una interfaz web de estudio completa como control remoto.
+Consola audiovisual multicámara con Android como motor de realización y una interfaz web de estudio como control remoto.
 
 ## Objetivo
-
-Construir una solución de realización en vivo, de bajo costo, orientada a eventos y transmisiones institucionales.
+Construir una solución de realización en vivo, de bajo costo, para eventos y transmisiones institucionales.
 
 ## Arquitectura acordada
-
 - **Samsung Galaxy A16 5G:** motor principal de captura, mezcla, gráficos, audio, grabación y streaming.
-- **Dos capturadoras HDMI a USB:** entradas de video UVC, sujetas a validación de compatibilidad simultánea.
-- **Redmi Note 10:** cámara inalámbrica auxiliar, inicialmente mediante SRT.
-- **Laptop:** consola web con Modo Control y Modo Estudio completo. No procesa ni mezcla el video principal.
-- **Salida objetivo:** 1280×720 a 30 fps (720p30), H.264 y audio AAC.
+- **Una capturadora HDMI USB UVC:** entrada cableada inicial.
+- **Fuentes Wi-Fi:** móviles y bodycams que permitan emitir por SRT o RTSP; RTMP podrá evaluarse como alternativa.
+- **Redmi Note 10:** primera cámara inalámbrica de prueba.
+- **Laptop:** consola web con Modo Control y Modo Estudio. No mezcla ni codifica el programa.
+- **Salida objetivo:** 1280×720 a 30 fps, H.264/AAC, sujeto a pruebas reales.
 
 ## Funciones previstas
+- Modo Control simplificado y Modo Estudio completo.
+- Una entrada HDMI y varias fuentes IP/Wi-Fi según rendimiento.
+- Preview/Program, multiview y transiciones CUT/FADE.
+- Escenas, gráficos PNG, zócalos, nombres, cargos y logotipos.
+- Biblioteca de clips, imágenes, intros y outros.
+- Audio, grabación local y emisión RTMP/RTMPS.
+- Panel adaptable a laptop, tablet y teléfono en la red local.
 
-- Modo Control simplificado para operación rápida.
-- Modo Estudio en laptop: multivista de fuentes, Preview/Program, escenas, transiciones, gráficos, biblioteca multimedia, audio, grabación y emisión.
-- Selección de fuentes y transiciones CUT/FADE.
-- Gráficos PNG transparentes, zócalos, nombres, cargos y logotipos.
-- Reproducción de intros y outros desde el almacenamiento.
-- Control de audio, grabación local y emisión RTMP/RTMPS.
-- Panel adaptable a laptop, tablet y teléfono dentro de la red local.
+## Etapas
+1. Validar una capturadora UVC en el Samsung.
+2. Incorporar una fuente Wi-Fi desde el Redmi Note 10.
+3. Probar HDMI + Wi-Fi simultáneamente.
+4. Implementar motor de composición, Preview/Program y transiciones.
+5. Incorporar gráficos, escenas, medios y audio.
+6. Añadir grabación y emisión.
+7. Conectar API local segura y consola web.
+8. Optimizar y probar estabilidad térmica y de red.
 
-## Etapas de desarrollo
-
-1. **Validación de hardware USB:** detectar y visualizar una capturadora; luego probar dos simultáneas y comprobar alimentación/temperatura.
-2. Motor Android: fuentes, preview/programa y transiciones.
-3. Gráficos, escenas y biblioteca de medios.
-4. Cámara inalámbrica mediante SRT; evaluar NDI como integración posterior.
-5. Grabación y streaming 720p30.
-6. API local segura y servicio de monitoreo para el panel.
-7. Modo Control y Modo Estudio web completos.
-8. Pruebas integrales y optimización.
+## Fuentes inalámbricas
+SRT será la opción preferida para contribución móvil cuando el emisor y receptor sean compatibles. RTSP permitirá integrar cámaras IP y bodycams que expongan ese protocolo. Tener Wi-Fi no garantiza integración: algunos equipos solo trabajan con aplicaciones propietarias. Ver [Fuentes Wi-Fi](docs/FUENTES-WIFI.md).
 
 ## Importante
-
-La compatibilidad de dos capturadoras en simultáneo depende del chipset de cada dispositivo, del hub USB, de la alimentación y de las limitaciones del teléfono. No se dará por garantizada hasta completar las pruebas reales.
-
-La laptop será una consola de operación y monitoreo. El video principal seguirá procesándose en Android; las vistas del estudio en laptop serán proxies de baja resolución o vistas seleccionadas para evitar sobrecargar el equipo.
-
-Este repositorio se desarrollará por etapas. No se considerará lista una función solo por estar dibujada en la interfaz: deberá estar implementada y probada.
+La laptop es consola de operación y monitoreo. El procesamiento audiovisual ocurre en Android. Las vistas web serán proxies de baja resolución o vistas seleccionadas para no sobrecargar el equipo.
+No se considerará lista una función solo por aparecer en pantalla: deberá implementarse y probarse en el hardware objetivo.
 
 ## Estado
-
-- [x] Repositorio inicializado.
-- [x] Arquitectura con Modo Control y Modo Estudio documentada.
-- [ ] Identificar RAM exacta del Samsung A16 5G.
-- [ ] Identificar modelo/chipset de las capturadoras HDMI.
-- [ ] Probar USB OTG y captura UVC.
-- [ ] Probar dos capturadoras simultáneas.
+- [x] Documentación de arquitectura y modos.
+- [x] Prototipo web inicial con HDMI 1, Wi-Fi 1, Wi-Fi 2 y medios.
+- [x] Documentación de fuentes inalámbricas.
+- [ ] Aplicación Android instalable y diagnóstico UVC.
+- [ ] Captura real de HDMI.
+- [ ] Recepción real SRT/RTSP.
+- [ ] Prueba simultánea HDMI + Wi-Fi.
