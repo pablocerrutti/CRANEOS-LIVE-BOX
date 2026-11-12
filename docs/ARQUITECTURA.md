@@ -1,88 +1,66 @@
 # Arquitectura técnica
 
 ## 1. Principio central
-
-El procesamiento audiovisual principal ocurre en el Samsung Galaxy A16 5G. La laptop ofrece una consola de operación completa, pero no recibe las señales originales para mezclarlas ni codifica el programa. Android mantiene una única realización y la web controla ese motor.
+El Samsung Galaxy A16 5G será el motor de realización. La laptop será una consola de operación completa, pero no mezclará ni codificará el programa. El sistema comienza con una capturadora HDMI USB y admite fuentes adicionales por Wi-Fi cuando entreguen protocolos estándar.
 
 ## 2. Motor Android
-
-Responsabilidades previstas:
-
-- Enumerar dispositivos USB mediante Android USB Host.
-- Gestionar permisos USB y conexión/desconexión.
-- Capturar entradas UVC, sujeto a compatibilidad del hardware.
-- Mantener fuentes Preview y Program.
+Responsabilidades:
+- Enumerar y gestionar una capturadora USB UVC.
+- Recibir fuentes de red RTSP y SRT; RTMP podrá evaluarse después.
+- Mantener Preview y Program.
 - Componer video, gráficos y audio.
-- Codificar una salida H.264/AAC para grabación o emisión.
-- Exponer una API local autenticada y un canal de eventos/estado para el panel web.
-- Generar vistas proxy de monitoreo de baja resolución.
+- Codificar H.264/AAC para grabación o emisión.
+- Exponer API local autenticada y estado/eventos al panel web.
+- Generar previews proxy de baja resolución.
 
-### Resolución objetivo
+## 3. Entradas de video
+1. **HDMI 1:** una capturadora USB UVC.
+2. **Wi-Fi 1:** móvil (primera prueba: Redmi Note 10) o bodycam con salida RTSP/SRT.
+3. **Wi-Fi 2 y futuras:** cámaras IP adicionales si la memoria, decodificación, red y temperatura lo permiten.
+4. **Medios:** imágenes, PNG, videos, intros y outros locales.
 
+### Protocolos
+- **SRT:** preferido para contribución móvil en vivo si ambos extremos lo soportan.
+- **RTSP:** para cámaras IP y bodycams que expongan una URL accesible.
+- **RTMP/RTMPS:** posible alternativa de contribución, no primera prioridad.
+- **Propietarios:** no se asumirá compatibilidad con cámaras que solo funcionen mediante su aplicación cerrada.
+
+La documentación de compatibilidad y pruebas está en [FUENTES-WIFI.md](FUENTES-WIFI.md).
+
+## 4. Resolución objetivo
 - Programa: 1280×720, 30 fps.
-- Monitoreo remoto: resolución y tasa limitadas, configurables según capacidad de la red y laptop.
-- Códec de salida inicial: H.264; audio AAC.
-- Bitrate inicial de prueba: 3–4 Mbps, ajustable según conexión.
+- Monitoreo remoto: resolución/FPS reducidos y configurables.
+- Códec: H.264 y AAC.
+- Bitrate inicial: 3–4 Mbps, ajustable.
 
-## 3. Entradas
-
-1. HDMI 1 por capturadora USB UVC.
-2. HDMI 2 por segunda capturadora USB UVC.
-3. Cámara inalámbrica auxiliar desde Redmi Note 10, priorizando SRT por su latencia y tolerancia a redes variables.
-4. Medios locales: PNG, imágenes, videos e intros/outros.
-
-NDI se evaluará por separado. No se asumirá compatibilidad NDI nativa sin validar SDK, licencias, rendimiento y compatibilidad con Android.
-
-## 4. Consola web: Modo Control y Modo Estudio
-
-La laptop podrá abrir dos interfaces sobre el mismo motor Android. También se podrá acceder desde tablet u otro teléfono dentro de la red local.
+## 5. Consola web
+La laptop, tablet o teléfono podrán abrir la consola en la red local.
 
 ### Modo Control
+- Selección de HDMI, cámaras Wi-Fi y medios.
+- CUT/FADE/TAKE.
+- Gráficos, medios, audio, REC, LIVE y estado.
 
-Interfaz compacta para operar rápidamente:
+### Modo Estudio
+- Multiview con fuentes disponibles.
+- Preview / Program.
+- Switcher y transiciones.
+- Escenas.
+- Gráficos y zócalos.
+- Biblioteca de clips y placas.
+- Audio y medidores.
+- Grabación/emisión.
+- Estado técnico de fuentes, red y temperatura cuando Android lo exponga.
 
-- Selección de cámaras/fuentes.
-- CUT y FADE.
-- Activación de gráficos y reproducción de intros/outros.
-- Audio, REC, LIVE y estado de conexión.
+La laptop no hará composición final. Recibirá vistas proxy para monitoreo.
 
-### Modo Estudio (principal en laptop)
+## 6. Red y seguridad
+- Motor y cámaras deben poder comunicarse por red local.
+- Evitar Wi-Fi de invitados con aislamiento entre clientes.
+- Preferir banda de 5 GHz y un punto de acceso estable.
+- Autenticar comandos y limitar el control a la red local.
+- No guardar contraseñas RTSP/SRT, tokens ni claves RTMP en GitHub o JavaScript.
+- Guardar credenciales sensibles en Android y redactarlas en la interfaz.
 
-Interfaz amplia inspirada en una consola de realización profesional, organizada por paneles:
-
-- **Multiview:** mosaico de las fuentes disponibles y estado de cada entrada.
-- **Preview / Program:** monitor de previsualización y monitor de salida al aire.
-- **Switcher:** botones de selección de fuentes, CUT, FADE y transiciones disponibles.
-- **Escenas:** guardar y recuperar combinaciones de fuentes, gráficos y medios.
-- **Gráficos:** cargar/seleccionar PNG transparentes, zócalos, nombres, cargos, logos, activar/desactivar y ajustar posición/tamaño.
-- **Medios:** biblioteca para intros, outros, videos e imágenes; controles de reproducción.
-- **Audio:** niveles, mute y selección de fuente cuando el motor Android lo permita.
-- **Emisión y grabación:** destino configurado en forma segura, estado LIVE/REC, tiempo transcurrido y alertas.
-- **Estado técnico:** conexión con el teléfono, fuentes detectadas, señal, resolución/FPS reportados, uso térmico/errores cuando Android pueda exponerlos.
-
-El panel debe ser utilizable con mouse y teclado, con botones amplios y etiquetas claras. Se prioriza una interfaz web liviana, sin dependencias pesadas innecesarias.
-
-### Política de monitoreo
-
-La laptop no recibirá todas las señales en resolución completa. Android entregará vistas proxy de baja resolución y/o solo las vistas seleccionadas. El mosaico multiview deberá poder reducir FPS, pausar vistas no seleccionadas y ocultar el video para priorizar control en equipos modestos.
-
-El Modo Estudio será completo en funciones de operación, no un segundo motor de mezcla. La composición final, codificación, grabación y transmisión seguirán en Android.
-
-## 5. Comunicación local
-
-La aplicación Android actuará como servidor local durante la sesión. El panel web se conectará a la dirección local del teléfono y se autenticará antes de enviar comandos.
-
-Se evaluará HTTP para operaciones puntuales y WebSocket para estado/eventos en tiempo real. El video de monitoreo se resolverá con un transporte adecuado y medido en pruebas (por ejemplo WebRTC o MJPEG según latencia, compatibilidad y carga). La implementación final deberá validar origen, sesión y comandos permitidos. No se expondrán claves RTMP ni credenciales en el frontend.
-
-## 6. Seguridad y privacidad
-
-- No incluir contraseñas, tokens ni claves de emisión en el repositorio.
-- No publicar el panel de control como servicio abierto a Internet.
-- Limitar el control a la red local y exigir autenticación.
-- Mostrar claramente cuándo cámara, micrófono, grabación o emisión están activos.
-
-## 7. Restricciones de rendimiento
-
-La primera prioridad es comprobar la captura UVC real en el teléfono. La captura simultánea de dos dispositivos, la decodificación de la cámara inalámbrica, la composición y la codificación pueden competir por CPU, memoria, USB y temperatura.
-
-La laptop se usará para interfaz, control y monitoreo reducido. Se implementarán perfiles de monitoreo (solo estado, multiview económico y monitor seleccionado) para adaptarse a equipos modestos. No se prometerá 720p30 estable hasta medirlo en el dispositivo real.
+## 7. Rendimiento
+La primera meta de prueba es una entrada UVC + una fuente Wi-Fi a 720p30. Después se probarán más fuentes. No se garantiza un número ilimitado de cámaras: cada flujo adicional requiere decodificación, memoria y ancho de banda y eleva la temperatura.
