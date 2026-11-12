@@ -1,0 +1,73 @@
+# CRANEOS LIVE BOX - MediaMTX ejemplo
+# Copiar como mediamtx.yml y cambiar TODAS las contraseñas de ejemplo.
+# No subir contraseñas reales a GitHub.
+logLevel: info
+logDestinations: [stdout]
+
+# RTMP ingest para cámaras móviles.
+rtmp: yes
+rtmpAddress: :1935
+
+# Lectura WebRTC para la futura integración con la consola.
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+
+# No habilitar API/metrics públicamente en esta etapa.
+api: no
+metrics: no
+pprof: no
+
+authMethod: internal
+authInternalUsers:
+  # Cada cámara puede publicar solamente en su propia ruta.
+  - user: cam1
+    pass: CAMBIAR_ESTA_CLAVE_CAM1
+    ips: ["100.64.0.0/10"]
+    permissions:
+      - action: publish
+        path: cam1
+
+  - user: cam2
+    pass: CAMBIAR_ESTA_CLAVE_CAM2
+    ips: ["100.64.0.0/10"]
+    permissions:
+      - action: publish
+        path: cam2
+
+  - user: cam3
+    pass: CAMBIAR_ESTA_CLAVE_CAM3
+    ips: ["100.64.0.0/10"]
+    permissions:
+      - action: publish
+        path: cam3
+
+  - user: cam4
+    pass: CAMBIAR_ESTA_CLAVE_CAM4
+    ips: ["100.64.0.0/10"]
+    permissions:
+      - action: publish
+        path: cam4
+
+  # Usuario de solo lectura para el módulo receptor de CRANEOS.
+  - user: craneos_view
+    pass: CAMBIAR_ESTA_CLAVE_LECTURA
+    ips: ["100.64.0.0/10"]
+    permissions:
+      - action: read
+        path: "~^cam[1-4]$"
+
+  # API local únicamente para diagnóstico en la propia laptop, si se activa.
+  - user: any
+    pass:
+    ips: ["127.0.0.1", "::1"]
+    permissions:
+      - action: api
+      - action: metrics
+      - action: pprof
+
+paths:
+  cam1:
+  cam2:
+  cam3:
+  cam4:
