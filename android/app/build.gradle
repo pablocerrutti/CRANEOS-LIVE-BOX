@@ -7,7 +7,7 @@ android {
     namespace 'com.craneos.livebox'
     compileSdk 35
 
-    defaultConfig {
+    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n\n    kotlinOptions { jvmTarget = '17' }\n\n    defaultConfig {
         applicationId 'com.craneos.livebox'
         minSdk 26
         targetSdk 32
