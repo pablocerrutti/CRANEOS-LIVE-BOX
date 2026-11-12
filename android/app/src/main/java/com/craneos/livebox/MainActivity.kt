@@ -1,41 +1,127 @@
 package com.craneos.livebox
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.media.projection.MediaProjectionManager
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.view.KeyEvent
+import android.view.View
+import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
+import com.pedro.common.ConnectChecker
+import com.pedro.library.rtmp.RtmpDisplay
 
-class MainActivity : Activity() {
-    private lateinit var status: TextView
-    private lateinit var devices: TextView
-    private lateinit var monitor: UsbCameraMonitor
+class MainActivity : Activity(), ConnectChecker {
+    private lateinit var webView: WebView
+    private var display: RtmpDisplay? = null
+    private var pendingUrl: String? = null
+    private val captureRequest = 4102
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(32, 48, 32, 32)
+        window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        webView = WebView(this).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            settings.mediaPlaybackRequiresUserGesture = false
+            webChromeClient = WebChromeClient()
+            webViewClient = WebViewClient()
+            addJavascriptInterface(CraneosBridge(), "CraneosAndroid")
+            loadUrl("https://pablocerrutti.github.io/CRANEOS-LIVE-BOX/?android=1")
         }
-        status = TextView(this).apply { textSize = 20f; text = "Buscando cámaras USB…" }
-        devices = TextView(this).apply { textSize = 15f }
-        root.addView(status)
-        root.addView(devices)
-        setContentView(ScrollView(this).apply { addView(root) })
+        setContentView(webView)
+    }
 
-        monitor = UsbCameraMonitor(this) { found ->
+    inner class CraneosBridge {
+        @JavascriptInterface fun startStreaming(url: String) {
             runOnUiThread {
-                status.text = if (found.isEmpty()) "No hay cámaras UVC detectadas" else "Cámaras USB detectadas: ${found.size}"
-                devices.text = found.joinToString("\n\n") { camera ->
-                    "${camera.name}\nVID: ${camera.vendorId} · PID: ${camera.productId}\nInterfaces UVC: ${camera.interfaceCount}\nEstado: ${camera.permissionState}"
+                if (!url.startsWith("rtmp://") && !url.startsWith("rtmps://")) {
+                    toast("Ingresá una dirección RTMP o RTMPS válida")
+                    return@runOnUiThread
                 }
+                if (display?.isStreaming == true) return@runOnUiThread
+                pendingUrl = url.trim()
+                val manager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+                startActivityForResult(manager.createScreenCaptureIntent(), captureRequest)
             }
         }
-        monitor.start()
+        @JavascriptInterface fun stopStreaming() { runOnUiThread { stopBroadcast() } }
+        @JavascriptInterface fun isAvailable(): Boolean = true
+    }
+
+    @Deprecated("Deprecated by Android; retained for broad device compatibility")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != captureRequest) return
+        if (resultCode != RESULT_OK || data == null) {
+            webView.evaluateJavascript("window.craneosStreamState && window.craneosStreamState('Permiso de captura cancelado')", null)
+            webView.evaluateJavascript("document.body.classList.remove('broadcast-output')", null)
+            return
+        }
+        try {
+            val stream = RtmpDisplay(this, true, this)
+            stream.setIntentResult(resultCode, data)
+            val metrics = resources.displayMetrics
+            val width = (metrics.widthPixels / 2) * 2
+            val height = (metrics.heightPixels / 2) * 2
+            val videoReady = stream.prepareVideo(width, height, 30, 2_000_000, 0, metrics.densityDpi)
+            val audioReady = stream.prepareAudio(96 * 1024, 44100, true)
+            if (!videoReady || !audioReady) {
+                stream.stopStream()
+                toast("El codificador no pudo preparar video o audio")
+                webView.evaluateJavascript("document.body.classList.remove('broadcast-output')", null)
+                return
+            }
+            display = stream
+            stream.startStream(pendingUrl ?: "")
+        } catch (e: Exception) {
+            toast("No se pudo iniciar RTMP: ${e.message}")
+            webView.evaluateJavascript("document.body.classList.remove('broadcast-output')", null)
+        }
+    }
+
+    private fun stopBroadcast() {
+        try { display?.stopStream() } catch (_: Exception) { }
+        display = null
+        pendingUrl = null
+        webView.evaluateJavascript("document.body.classList.remove('broadcast-output')", null)
+        webView.evaluateJavascript("window.craneosStreamState && window.craneosStreamState('Emisión detenida')", null)
+    }
+
+    private fun toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN && display?.isStreaming == true) {
+            stopBroadcast()
+            toast("Emisión detenida")
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onConnectionStarted(url: String) { runOnUiThread { streamStatus("Conectando…") } }
+    override fun onConnectionSuccess() { runOnUiThread { streamStatus("EN VIVO · RTMP conectado") } }
+    override fun onNewBitrate(bitrate: Long) { }
+    override fun onConnectionFailed(reason: String) { runOnUiThread { streamStatus("Error RTMP: " + reason) } }
+    override fun onDisconnect() { runOnUiThread { streamStatus("Desconectado") } }
+    override fun onAuthError() { runOnUiThread { streamStatus("Error de autenticación RTMP") } }
+    override fun onAuthSuccess() { runOnUiThread { streamStatus("Autenticación correcta") } }
+
+    private fun streamStatus(message: String) {
+        val safe = message.replace("\\", "\\\\").replace("'", "\\'")
+        webView.evaluateJavascript("window.craneosStreamState && window.craneosStreamState('$safe')", null)
     }
 
     override fun onDestroy() {
-        if (::monitor.isInitialized) monitor.stop()
+        stopBroadcast()
+        webView.destroy()
         super.onDestroy()
     }
 }
