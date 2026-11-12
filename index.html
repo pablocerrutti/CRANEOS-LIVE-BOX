@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111820"><meta name="description" content="CRANEOS LIVE BOX · Consola de realización audiovisual">
+<meta name="theme-color" content="#111820"><meta name="description" content="CRANEOS LIVE BOX · Consola móvil y de estudio"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="manifest.webmanifest">
 <title>CRANEOS LIVE BOX · Realización</title><link rel="stylesheet" href="web/studio.css"><link rel="stylesheet" href="web/network-panel.css">
 </head>
 <body>
 <div class="app-shell">
 <header class="topbar">
  <a class="brand" href="./"><span class="brand-mark">CL</span><span><strong>CRANEOS LIVE BOX</strong><small>REALIZACIÓN EN VIVO</small></span></a>
- <div class="connection"><i class="dot online"></i><span id="connectionText">SISTEMA LISTO</span><span class="status-chip">WEB SWITCHER</span></div>
+ <div class="connection"><i class="dot online"></i><span id="connectionText">SISTEMA LISTO</span><span class="status-chip">WEB SWITCHER</span><button id="installAppButton" class="button secondary install-app" hidden>INSTALAR APP</button></div>
 </header>
 <main class="control-room">
  <section class="monitor-bank">
@@ -47,6 +47,7 @@
   <div class="section-heading"><div><h2>ENTRADAS</h2><p>Seleccioná PREVIEW o enviá una fuente directamente a PROGRAM</p></div><span id="sourceCount" class="count-label">0 FUENTES</span></div>
   <div class="input-bank" id="multiview"><div class="empty-state">Conectá una cámara USB, una cámara Wi-Fi o agregá un medio para comenzar.</div></div>
   <div class="input-tools">
+   <div class="phone-capture-tool"><label for="phoneFacing">CÁMARA DEL TELÉFONO</label><select id="phoneFacing"><option value="environment">TRASERA</option><option value="user">FRONTAL</option></select><button id="phoneCameraButton" class="button take">＋ USAR ESTE CELULAR</button><button id="stopPhoneCamera" class="button secondary" disabled>DETENER CÁMARA</button></div>
    <div class="input-tool-group">
     <label for="videoDevice">CAPTURADORA USB / HDMI</label>
     <select id="videoDevice"><option value="">Elegir dispositivo de video…</option></select>
@@ -110,5 +111,5 @@
 </main>
 <footer class="footer"><span>CRANEOS LIVE BOX · CONTROL ROOM</span><span>PREVIEW ≠ PROGRAM · TAKE PARA SALIR AL AIRE</span><a href="docs/ARQUITECTURA-WEB.md">Arquitectura</a></footer>
 </div>
-<script src="web/studio.js"></script><script src="web/network-panel.js"></script>
+<script src="web/studio.js"></script><script src="web/network-panel.js"></script><script>if("serviceWorker" in navigator && location.protocol==="https:"){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
 </body></html>
