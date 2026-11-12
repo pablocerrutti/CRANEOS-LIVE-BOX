@@ -2,7 +2,7 @@
 
 ## Consola web
 
-GitHub Pages sirve la consola de realización. La laptop es el equipo recomendado para operar esta etapa.
+GitHub Pages sirve una consola adaptable a celular y laptop. El celular puede operar en modo autónomo; la laptop amplía las posibilidades de entradas y monitoreo.
 
 - Preview y Program.
 - Selección de fuente y multiview.
