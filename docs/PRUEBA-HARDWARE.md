@@ -1,37 +1,40 @@
-# Etapa 1 — Validación de hardware
+# Etapa 1 — Validación de hardware y red
 
-No avanzar a una realización multicámara completa hasta comprobar esta etapa.
+## Kit inicial
+- Samsung Galaxy A16 5G como motor.
+- Una capturadora HDMI USB compatible con UVC.
+- Hub USB OTG, si es necesario, con alimentación estable.
+- Redmi Note 10 como cámara inalámbrica.
+- Router Wi-Fi, preferentemente 5 GHz.
 
-## Datos a identificar
+## Prueba USB
+1. Conectar la capturadora al Samsung mediante USB-C OTG.
+2. Aceptar el permiso USB si Android lo solicita.
+3. Verificar enumeración del dispositivo y formato de video.
+4. Conectar una fuente HDMI conocida y comprobar imagen y audio.
+5. Mantener la prueba al menos 15 minutos y observar cortes, temperatura y carga.
 
-- [ ] Variante exacta del Samsung Galaxy A16 5G y memoria RAM.
-- [ ] Marca/modelo de la capturadora HDMI 1.
-- [ ] Marca/modelo de la capturadora HDMI 2.
-- [ ] Chipset/controlador UVC de cada capturadora, si está disponible.
-- [ ] Modelo del hub USB y si admite alimentación externa.
-- [ ] Fuente de alimentación y capacidad del hub.
+## Prueba Wi-Fi
+1. Conectar Samsung y Redmi a la misma red local.
+2. Configurar en el Redmi una app emisora compatible con SRT o RTSP.
+3. Obtener la URL/dirección del flujo.
+4. Comprobar que el Samsung pueda recibirlo.
+5. Medir estabilidad y latencia durante al menos 15 minutos.
 
-## Secuencia de pruebas
-
-1. Conectar el hub al Samsung mediante USB-C OTG.
-2. Conectar una capturadora y verificar que Android la enumere.
-3. Conectar una fuente HDMI conocida y comprobar imagen y audio.
-4. Medir estabilidad durante al menos 15 minutos.
-5. Repetir con la segunda capturadora por separado.
-6. Conectar ambas a la vez y comprobar que Android enumere las dos.
-7. Visualizar ambas entradas y observar cortes, calentamiento y consumo.
-8. Repetir con alimentación externa del hub, si corresponde.
+## Prueba combinada
+Mantener la capturadora HDMI y la cámara Wi-Fi activas simultáneamente. Objetivo inicial: salida 720p30, con previews de menor resolución si es necesario. Observar temperatura, cortes, audio y estabilidad durante 30 minutos.
 
 ## Criterios de aprobación
+- Capturadora funcional individualmente.
+- Fuente Wi-Fi funcional individualmente.
+- Ambas funcionan simultáneamente sin congelamientos continuos.
+- Sin reinicios ni desconexiones.
+- Temperatura adecuada para una sesión razonable.
 
-- Ambas capturadoras son detectadas sin desconexiones.
-- Se puede recibir video de ambas al mismo tiempo.
-- La imagen no presenta congelamientos continuos.
-- El teléfono no se reinicia ni muestra errores USB.
-- La temperatura y estabilidad permiten una sesión de prueba razonable.
+## Datos necesarios
+- RAM exacta del A16.
+- Marca/modelo de capturadora y hub.
+- Marca/modelo de bodycam que se quiera integrar.
+- Protocolo disponible: SRT, RTSP, RTMP, ONVIF u otro.
 
-## Qué enviar para diagnosticar
-
-Fotos de las etiquetas/modelos de las capturadoras y del hub, captura de la información del teléfono (modelo y RAM), y descripción de cualquier mensaje que aparezca al conectar los dispositivos.
-
-**Nota:** que una capturadora funcione individualmente no demuestra que dos funcionen juntas. El ancho de banda USB, el hub y los formatos de video pueden limitar la combinación.
+Tener Wi-Fi no garantiza integración: debe existir un flujo de video accesible o una interfaz documentada.
