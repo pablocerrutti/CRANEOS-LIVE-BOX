@@ -45,3 +45,12 @@ body{background:radial-gradient(ellipse 70% 36% at 50% 0%,rgba(34,112,184,.20),t
 @media(max-width:520px){.audio-channels{grid-template-columns:1fr 1fr}.audio-panel{padding:10px}.audio-channel{padding:7px}.audio-panel-head p{line-height:1.4}#fullscreenButton{grid-column:1/-1}.output-actions{grid-template-columns:1fr 1fr}}
 
 #audioMonitor{display:none!important}
+
+
+/* MODO AUTÓNOMO EN TELÉFONO · captura y operación táctil */
+.phone-capture-tool{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 10px;border:1px solid #286b55;background:linear-gradient(120deg,#10271f,#13202a);border-radius:6px}
+.phone-capture-tool label{font-size:9px;color:#9ed9bd;font-weight:900;letter-spacing:.08em}
+.phone-capture-tool select{background:#0d151e;color:var(--text);border:1px solid #354658;border-radius:4px;padding:9px;font-size:11px}
+.phone-capture-tool .button{min-height:36px}
+.install-app{font-size:8px;padding:7px 9px}
+@media(max-width:700px){.phone-capture-tool{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}.phone-capture-tool label{grid-column:1/-1}.phone-capture-tool select{width:100%;min-height:40px}.phone-capture-tool #phoneCameraButton{grid-column:1/-1;min-height:44px}.phone-capture-tool #stopPhoneCamera{grid-column:1/-1;min-height:40px}.input-tools .button,.input-tool-group .button{min-height:42px}.button,.bus-select,select,input{touch-action:manipulation}.bus-select{min-height:40px;font-size:10px}.switcher-actions .button{min-height:48px;font-size:11px}.output-actions .button{min-height:40px}.monitor-bank{gap:8px}.monitor-card .monitor-screen{max-height:none}.audio-channel input[type=range]{min-height:28px}.advanced-dock{margin-bottom:8px}.connection{gap:6px}}
