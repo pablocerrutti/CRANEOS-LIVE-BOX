@@ -1,0 +1,17 @@
+(() => {
+const $=id=>document.getElementById(id);let base="",connected=false,selected="";
+const state=(ok,msg)=>{connected=ok;$("connectionDot").className=ok?"dot online":"dot";$("connectionText").textContent=msg;$("engineStatus").textContent=ok?"CONECTADO":"SIN MOTOR";$("connectButton").textContent=ok?"Desconectar":"Conectar";document.querySelectorAll("[data-source],#takeButton,#liveButton,#recordButton,#addWifi").forEach(x=>x.disabled=!ok);};
+async function api(path,opts={}){const r=await fetch(base.replace(/\/$/,"")+path,{...opts,headers:{"Content-Type":"application/json",...(opts.headers||{})},cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);return r.json();}
+async function refresh(){try{const d=await api("/api/status");if(!d||d.ok!==true)throw Error("Estado inválido");state(true,"Motor Android conectado");const list=d.sources||[];$("sourceCount").textContent=list.filter(x=>x.connected).length+" FUENTES";["hdmi1","wifi1","wifi2","media"].forEach(k=>{const s=list.find(x=>x.id===k);$(k+"State").textContent=s?(s.connected?"Con señal":"Sin señal"):"No detectada";});$("previewSource").textContent="Fuente: "+(d.preview||"—");$("programSource").textContent="Salida: "+(d.program||"—");$("liveState").textContent=d.live?"LIVE":"OFFLINE";$("lastUpdate").textContent="Actualizado "+new Date().toLocaleTimeString();}catch(e){state(false,"Motor desconectado");$("lastUpdate").textContent=e.message;}}
+async function command(name,data={}){try{const d=await api("/api/command",{method:"POST",body:JSON.stringify({command:name,...data})});if(!d||d.ok!==true)throw Error(d?.message||"Acción no confirmada");await refresh();}catch(e){state(false,"Conexión interrumpida");alert(e.message);}}
+$("connectButton").onclick=()=>{if(connected){base="";state(false,"Motor Android desconectado");return;}$("connectDialog").showModal();};
+$("cancelConnect").onclick=()=>$("connectDialog").close();
+$("connectForm").onsubmit=async e=>{e.preventDefault();const v=$("engineAddress").value.trim().replace(/\/$/,"");try{new URL(v);base=v;$("connectDialog").close();await refresh();}catch(err){alert("No se pudo conectar: "+err.message);}};
+document.querySelectorAll(".mode-tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".mode-tab").forEach(x=>x.classList.toggle("active",x===b));$("studioView").classList.toggle("hidden",b.dataset.mode!=="studio");$("controlView").classList.toggle("hidden",b.dataset.mode!=="control");});
+document.querySelectorAll("[data-source]").forEach(b=>b.onclick=()=>{selected=b.dataset.source;command("preview",{source:selected});});
+$("takeButton").onclick=()=>selected&&command("take",{source:selected,transition:$("transitionType").value});
+$("liveButton").onclick=()=>command("toggle_live");$("recordButton").onclick=()=>command("toggle_record");
+$("monitorProfile").onchange=e=>command("monitor_profile",{profile:e.target.value});
+$("addWifi").onclick=()=>{const url=$("wifiUrl").value.trim();if(!/^(rtsp|srt):\/\//i.test(url)){alert("Introduce una dirección RTSP o SRT válida.");return;}command("add_network_source",{id:$("wifiSlot").value,url});$("wifiUrl").value="";};
+state(false,"Motor Android desconectado");
+})();
