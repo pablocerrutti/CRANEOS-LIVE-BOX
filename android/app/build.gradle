@@ -7,7 +7,16 @@ android {
     namespace 'com.craneos.livebox'
     compileSdk 35
 
-    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n\n    kotlinOptions { jvmTarget = '17' }\n\n    defaultConfig {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    defaultConfig {
         applicationId 'com.craneos.livebox'
         minSdk 26
         targetSdk 32
@@ -17,6 +26,5 @@ android {
 }
 
 dependencies {
-    // RootEncoder: screen capture (MediaProjection), H.264/AAC and RTMP/RTMPS.
     implementation 'com.github.pedroSG94.RootEncoder:library:2.8.1'
 }
