@@ -40,3 +40,10 @@ La consola web actual tiene un flujo manual WebRTC para una cámara móvil. Se i
 ## Android nativo
 
 El código Android se conserva como una línea de desarrollo posterior. La integración actual de RTMP no está compilada ni validada en hardware; no debe considerarse operativa ni reemplaza el flujo web + Redmi.
+
+
+## Modo autónomo desde el celular — etapa web/PWA
+
+La consola incluye captura directa de la cámara frontal o trasera del mismo teléfono mediante `getUserMedia`, entrada de audio del teléfono, selección PREVIEW/PROGRAM, transiciones y grabación local WebM desde el canvas. La interfaz adapta controles táctiles y se puede instalar como PWA en navegadores compatibles. En iPhone, la instalación se realiza desde Compartir → Añadir a pantalla de inicio; en Android Chrome puede aparecer el botón Instalar.
+
+Esta etapa permite realizar y grabar desde el teléfono, pero **no equivale todavía a una emisión RTMP autónoma**. Safari/Chrome no exponen un emisor RTMP directo ni bonding de interfaces al JavaScript de la página. La publicación RTMP y el bonding quedan para el motor nativo Android y su servicio de red. La grabación local y la captura deben probarse en cada teléfono; el navegador puede limitar resolución, duración, multitarea y almacenamiento.
